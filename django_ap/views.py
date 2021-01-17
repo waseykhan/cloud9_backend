@@ -5,6 +5,7 @@ from django_ap.models import UseName
 from django_ap.models import AccessData
 import json
 from datetime import datetime
+from django.core import serializers
 
 
 # Create your views here.
@@ -23,14 +24,18 @@ def createUser(request):
     password = request.GET.get('pass')
     u = UseName(user_Name=name, pas=password)
     u.save()
-    return HttpResponse(99)
+    return HttpResponse(95)
 
 
 @csrf_exempt
 def get_items(request):
-    name = request.GET.get('UserName')
-    a = AccessData.objects.get(user=name)
-    return HttpResponse(a)
+    try:
+        name = request.GET.get('UserName')
+        a = AccessData.objects.filter(user=name)
+        return HttpResponse(a)
+    except AccessData.DoesNotExist:
+        return HttpResponse(29)
+        
 
 
 @csrf_exempt
