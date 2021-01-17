@@ -3,9 +3,11 @@ from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_ap.models import UseName
 from django_ap.models import AccessData
+from django_ap.models import DoneData
 import json
 from datetime import datetime
 from django.core import serializers
+
 
 
 # Create your views here.
@@ -41,8 +43,7 @@ def get_items(request):
             data['habbit'] = values.item;
             data['date'] = values.date;
             data['endDate'] = values.endDate;
-
-        print(data)    
+  
         return JsonResponse(data)
     except AccessData.DoesNotExist:
         return HttpResponse(29)
@@ -58,7 +59,36 @@ def add_items(request):
     a.save()
     print(d)
     return HttpResponse(25)
-    
+
+
+@csrf_exempt
+def doneItems(request):
+    name = request.GET.get('name')
+    doneHabbit = request.GET.get('habbit')
+    id = 0
+    id = id + 1
+    d = datetime.now()
+    result = DoneData(id, name, doneHabbit, d)
+    result.save()
+    print(result)
+    return HttpResponse(2)
+
+def getDoneItems(request):
+     try:
+        name = request.GET.get('name')
+        a = DoneData.objects.filter(user=name)
+        data = {}
+        for values in a:
+            data['name'] = values.user
+            data['item'] = values.item
+            data['date'] = str(values.dateEnded)
+        dumps = json.dumps(data)
+        return JsonResponse(dumps, safe=False)
+     except DoneData.DoesNotExist:
+        return HttpResponse(39)
+        
+
+
 
 
 

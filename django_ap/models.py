@@ -18,3 +18,11 @@ class AccessData(models.Model):
 
     def __str__(self):
         return str(self.date) + " " + self.item + " " + self.user + " " + str(self.endDate)
+
+class DoneData(models.Model):
+    user = models.CharField(max_length=60)
+    item = models.CharField(max_length=75)
+    dateEnded = models.DateField()
+
+    def __str__(self):
+        return str(self.dateEnded) + " " + self.item + " " + self.user
