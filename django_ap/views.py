@@ -13,9 +13,7 @@ def index(request):
     try:
         var = request.GET.getlist('UserName')[0]
         pas = request.GET.getlist('pass')[0]
-        #uName = UseName(user_Name="var", pas="pas")
         result = UseName.objects.get(user_Name=var, pas=pas)
-        #print(uName.objects.all())
         return HttpResponse(result)
     except UseName.DoesNotExist:
         return HttpResponse(69)
