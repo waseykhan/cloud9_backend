@@ -11,10 +11,10 @@ class UseName(models.Model):
         return self.user_Name + " " + self.pas
 
 class AccessData(models.Model):
-    user = models.ForeignKey(UseName, on_delete=models.PROTECT)
+    user = models.CharField(max_length=60)
     item = models.CharField(max_length=75)
     date = models.DateField()
-    endDate = models.DateField(True)
+    endDate = models.DateField(True, default=0)
 
     def __str__(self):
-        return str(self.date) + self.item + self.user
+        return str(self.date) + " " + self.item + " " + self.user + " " + str(self.endDate)
