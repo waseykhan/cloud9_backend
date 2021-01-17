@@ -60,12 +60,13 @@ def add_items(request):
     print(d)
     return HttpResponse(25)
 
-
 @csrf_exempt
 def doneItems(request):
     name = request.GET.get('name')
     doneHabbit = request.GET.get('habbit')
-    id = 0
+    dataHabbit = AccessData.objects.get(user=name, item=doneHabbit)
+    dataHabbit.delete()
+    id = 2
     id = id + 1
     d = datetime.now()
     result = DoneData(id, name, doneHabbit, d)
@@ -73,6 +74,7 @@ def doneItems(request):
     print(result)
     return HttpResponse(2)
 
+@csrf_exempt
 def getDoneItems(request):
      try:
         name = request.GET.get('name')
