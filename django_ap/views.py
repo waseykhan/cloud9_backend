@@ -11,10 +11,13 @@ from django.core import serializers
 # Create your views here.
 def index(request):
     try:
-        var = request.GET.getlist('UserName')[0]
-        pas = request.GET.getlist('pass')[0]
+        var = request.GET.get('UserName')
+        pas = request.GET.get('pass')
         result = UseName.objects.get(user_Name=var, pas=pas)
-        return HttpResponse(result)
+        dic = {}
+        dic['userName'] = result.user_Name
+        dic['password'] = result.pas
+        return JsonResponse(dic)
     except UseName.DoesNotExist:
         return HttpResponse(69)
 
@@ -32,7 +35,15 @@ def get_items(request):
     try:
         name = request.GET.get('UserName')
         a = AccessData.objects.filter(user=name)
-        return HttpResponse(a)
+        data = {}
+        for values in a:
+            data['name'] = values.user;
+            data['habbit'] = values.item;
+            data['date'] = values.date;
+            data['endDate'] = values.endDate;
+
+        print(data)    
+        return JsonResponse(data)
     except AccessData.DoesNotExist:
         return HttpResponse(29)
         
